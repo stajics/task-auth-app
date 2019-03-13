@@ -2,7 +2,7 @@
 
 ### `npm install` or `yarn install`
 
-Runs the app.
+Installs the dependenices.
 
 ### `npm start` or `yarn start`
 
