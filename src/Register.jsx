@@ -6,7 +6,7 @@ import {
 import { toast } from 'react-toastify';
 import { get } from 'lodash';
 
-const Register = () => {
+const Register = ({ history }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -37,7 +37,6 @@ const Register = () => {
         password,
       });
 
-      const { history } = this.props; //eslint-disable-line
       history.push('/user');
     } catch (e) {
       const errorCode = get(e, 'response.data.error.code');
