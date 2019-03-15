@@ -3,9 +3,9 @@ import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App.jsx';
+import App from './App';
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('app')
+  <App />, // eslint-disable-line
+  document.getElementById('app'),
 );
