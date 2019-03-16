@@ -1,4 +1,6 @@
-# task-auth-app
+# React-boilerplate
+
+React boilerplate signup / login app using React-router, react hooks, context API, flow 
 
 ### `npm install` or `yarn install`
 
