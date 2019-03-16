@@ -6,16 +6,19 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { get } from 'lodash';
-import { AppStateContext } from './App';
+import { AppStateContext } from '../App';
 
-const Login = ({ history }) => {
+const Register = ({ history }) => {
   const appStateContext = useContext(AppStateContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [isValidated, setIsValidated] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isRepeatPasswordValid = () => repeatPassword === password;
 
   const isUsernameValid = () => /^[a-zA-Z0-9]+$/.test(username);
 
@@ -27,20 +30,26 @@ const Login = ({ history }) => {
       setIsSubmitted(true);
       setIsLoading(true);
 
-      if (!isUsernameValid()) {
+      if (!isRepeatPasswordValid() || !isUsernameValid()) {
         return;
       }
 
       setIsValidated(true);
 
-      const res = await axios.post('http://localhost:8080/auth/login', {
+      const res = await axios.post('http://localhost:8080/auth/signup', {
         username,
         password,
       });
 
       appStateContext.setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data));
+      history.push('/user');
     } catch (e) {
+      const errorCode = get(e, 'response.data.error.code');
+      if (errorCode === 11000) {
+        setIsValidated(false);
+        toast.error('Username already in use.');
+      }
       const errorMessage = get(e, 'response.data.error.message');
       if (errorMessage) {
         setIsValidated(false);
@@ -57,6 +66,11 @@ const Login = ({ history }) => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    setIsValidated(false);
+  };
+
+  const handleRepeatPasswordChange = (e) => {
+    setRepeatPassword(e.target.value);
     setIsValidated(false);
   };
 
@@ -95,8 +109,23 @@ const Login = ({ history }) => {
                 />
               </Form.Group>
 
+              <Form.Group controlId="formBasicRepeatPassword">
+                <Form.Control
+                  value={repeatPassword}
+                  onChange={handleRepeatPasswordChange}
+                  required
+                  isInvalid={isSubmitted ? !isRepeatPasswordValid() : false}
+                  minLength="6"
+                  type="password"
+                  placeholder="Repeat password"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Passwords do not match.
+                </Form.Control.Feedback>
+              </Form.Group>
+
               <Button style={{ width: '100%' }} variant="primary" type="submit" enabled={`${!isLoading}`}>
-                Login
+                Submit
               </Button>
             </Form>
           </Card>
@@ -106,4 +135,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+export default Register;
