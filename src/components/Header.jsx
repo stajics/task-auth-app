@@ -1,8 +1,9 @@
+// @flow
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-const Header = ({ user, signOut }) => (
+const Header = ({ user, signOut }: { user: ?Object, signOut: Function }) => (
   <Navbar bg="light" expand="lg">
     <Navbar.Brand>React-Boilerplate</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />

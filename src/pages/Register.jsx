@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { toast } from 'react-toastify';
 import { get } from 'lodash';
 import { AppStateContext } from '../App';
 
-const Register = ({ history }) => {
+const Register = ({ history }: { history: Object }) => {
   const appStateContext = useContext(AppStateContext);
 
   const [username, setUsername] = useState('');
@@ -124,7 +125,7 @@ const Register = ({ history }) => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Button style={{ width: '100%' }} variant="primary" type="submit" enabled={`${!isLoading}`}>
+              <Button style={{ width: '100%' }} variant="primary" type="submit" enabled={(!isLoading).toString()}>
                 Submit
               </Button>
             </Form>

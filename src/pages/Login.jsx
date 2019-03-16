@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { toast } from 'react-toastify';
 import { get } from 'lodash';
 import { AppStateContext } from '../App';
 
-const Login = ({ history }) => {
+const Login = ({ history }: { history: Object }) => {
   const appStateContext = useContext(AppStateContext);
 
   const [username, setUsername] = useState('');
@@ -40,6 +41,7 @@ const Login = ({ history }) => {
 
       appStateContext.setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data));
+      history.push('/');
     } catch (e) {
       const errorMessage = get(e, 'response.data.error.message');
       if (errorMessage) {
@@ -95,7 +97,7 @@ const Login = ({ history }) => {
                 />
               </Form.Group>
 
-              <Button style={{ width: '100%' }} variant="primary" type="submit" enabled={`${!isLoading}`}>
+              <Button style={{ width: '100%' }} variant="primary" type="submit" enabled={(!isLoading).toString()}>
                 Login
               </Button>
             </Form>

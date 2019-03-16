@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useEffect, useContext } from 'react';
 import {
   BrowserRouter as Router, Route, Switch, Redirect,
@@ -14,7 +15,12 @@ import NotFound from './pages/NotFound';
 
 import Header from './components/Header';
 
-export const AppStateContext = React.createContext({
+export type AppStateType = {
+  user: ?{ username: string, token: string },
+  setUser: (?{ username: string, token: string }) => void,
+};
+
+export const AppStateContext = React.createContext<AppStateType>({
   user: null,
   setUser: () => {},
 });
@@ -54,10 +60,10 @@ const App = () => {
 
   if (isLoading) return <h3>Loading...</h3>;
   return (
-    <div>
+    <>
       <AppStateContext.Provider value={{ user, setUser }}>
         <Router>
-          <div>
+          <>
             <Header user={user} signOut={signOut} />
             <Switch>
               {
@@ -72,11 +78,11 @@ const App = () => {
               <PrivateRoute path="/user" component={ThankYou} />
               <Route component={NotFound} />
             </Switch>
-          </div>
+          </>
         </Router>
       </AppStateContext.Provider>
       <ToastContainer />
-    </div>
+    </>
   );
 };
 
